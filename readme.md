@@ -18,12 +18,12 @@ Elements:
 
 Controls:
  - Player will be first prompted with choosing a weapon:
-  = Q: Sword
-  = W: Wand
-  = E: Shield
+  - Q: Sword
+  - W: Wand
+  - E: Shield
  - If the player has at least 2 MP, he will be able to use an element.
-  = 1: Fire
-  = 2: Water
-  = 3: Wind
-  = 4: Earth
-  = 5: Pass 
+  - 1: Fire
+  - 2: Water
+  - 3: Wind
+  - 4: Earth
+  - 5: Pass 
