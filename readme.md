@@ -17,7 +17,7 @@ Elements:
  - Earth (3 MP): Negates and reflects Wind element.
 
 Controls:
- - Player will be first prompted with choosing a weapon: 
+ - Player will be first prompted with choosing a weapon:  
    Q: Sword  
    W: Wand  
    E: Shield  
