@@ -83,4 +83,4 @@ ai_mp = 10
 
 ai_hand = ["2","3","1"]
 
-print setHand(p1_hp,p1_mp,ai_hp,ai_mp,ai_hand)
+# print setHand(p1_hp,p1_mp,ai_hp,ai_mp,ai_hand)
