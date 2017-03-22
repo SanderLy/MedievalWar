@@ -8,7 +8,7 @@ How to play
 ======================================
 
 Both players start with 20 HP and 3 MP.
-Every turn, both players gain 1 MP and gain one random element.
+Every turn, both players gain 1 MP and one random element.
 Both players start with 3 random elements.
 First player to reach 0 HP loses the game.
 
@@ -39,7 +39,7 @@ Q: Sword
 W: Wand
 E: Shield
 
-If the player has at least 2 MP, he will be able to use an element.
+If a player has at least 2 MP, he will be able to use an element.
 0: Pass
 1: Fire
 2: Water
@@ -138,7 +138,6 @@ def element_battle(player_set, cpu_set):
 			player_total_damage += 4
 
 	for element in cpu_set:
-		print cpu_mp
 		if element == "Fire" and cpu_mp > 1:
 			result += "CPU dealt 2 fire damage. \n "
 			cpu_total_damage += 2
@@ -148,6 +147,7 @@ def element_battle(player_set, cpu_set):
 			result += "CPU gained 3 HP. \n "
 			cpu_total_restore += 3
 			cpu_mp -= 2
+			print "Water " + str(cpu_mp)
 			cpu_hand.remove("Water")
 		elif element == "Wind" and cpu_mp > 2:
 			result += "CPU dealt 4 wind damage. \n "
@@ -157,39 +157,36 @@ def element_battle(player_set, cpu_set):
 		elif element == "Earth" and cpu_mp > 2:
 			cpu_earth = True
 			cpu_mp -= 3
+			print "Earth " + str(cpu_mp) 
 			cpu_hand.remove("Earth")
 
 	if cpu_earth:
-		result += "CPU negated incoming damage. \n"
+		result += "CPU negated incoming damage. \n "
 		player_total_damage = 0
 		for i in range(player_set.count("Wind")):
-			result += "CPU reflected 4 Wind damage. \n"
+			result += "CPU reflected 4 Wind damage. \n "
 			player_hp -= 4
 
 	if "Earth" in player_set:
-		result += "Player negated incoming damage. \n"
+		result += "Player negated incoming damage. \n "
 		cpu_total_damage = 0
 		for i in range(cpu_set.count("Wind")):
-			result += "Player reflected 4 Wind damage. \n"
+			result += "Player reflected 4 Wind damage. \n "
 			cpu_hp -= 4
 		
-		
-
 	player_hp -= cpu_total_damage
 	player_hp += player_total_restore
 	cpu_hp -= player_total_damage
 	cpu_hp += cpu_total_restore
 
-
 	return result
-
 
 def determine_winner(player_hp, cpu_hp):
 	if player_hp < 1 and cpu_hp < 1:
 		return "DRAW"
-	if player_hp < 1:
+	elif player_hp < 1:
 		return "CPU WINS!"
-	if cpu_hp < 1:
+	elif cpu_hp < 1:
 		return "PLAYER WINS!"
 
 for i in range(3):
@@ -211,7 +208,7 @@ while game:
 			flag = False
 			player_weapon = weapons[player_weapon]
 		else:
-			print "Please input Q, W, or E"
+			print "Please input Q, W, or E."
 	
 	flag = True
 	first = True
@@ -219,61 +216,65 @@ while game:
 	cpu_set = []
 	cost = 0
 	while flag:
-		if first:
-			player_element = raw_input("Choose your Element: ")
-		else:
-			player_element = raw_input("Choose another Element: ")
+		try:
+			if first:
+				player_element = raw_input("Choose your Element: ")
+			else:
+				player_element = raw_input("Choose another Element: ")
 
-		if player_element == "0":
-			break
+			if player_element == "0":
+				player_set = "None"
+				break
 
-		if player_hand[int(player_element) - 1] == "Fire":
-			player_element = "Fire"
-			cost = 2
-		elif player_hand[int(player_element) - 1] == "Water":
-			player_element = "Water"
-			cost = 2
-		elif player_hand[int(player_element) - 1] == "Earth":
-			player_element = "Earth"
-			cost = 3
-		elif player_hand[int(player_element) - 1] == "Wind":
-			player_element = "Wind"
-			cost = 3
-		
-		if player_mp >= cost:
-			player_mp -= cost
-			player_set.append(player_element)
-			player_hand.remove(player_element)
-		else:
-			print "Not enough MP."
+			if int(player_element) <= len(player_hand):
+				if player_hand[int(player_element) - 1] == "Fire":
+					player_element = "Fire"
+					cost = 2
+				elif player_hand[int(player_element) - 1] == "Water":
+					player_element = "Water"
+					cost = 2
+				elif player_hand[int(player_element) - 1] == "Earth":
+					player_element = "Earth"
+					cost = 3
+				elif player_hand[int(player_element) - 1] == "Wind":
+					player_element = "Wind"
+					cost = 3
+				
+				if player_mp >= cost:
+					player_mp -= cost
+					player_set.append(player_element)
+					player_hand.remove(player_element)
+				else:
+					print "Not enough MP."
 
-		if player_mp < 2:
-			flag = False
-		else:
-			first = False
+				if player_mp < 2:
+					flag = False
+				else:
+					first = False
+			else:
+				print "Please input only from 1 to " + str(len(player_hand)) + "."
 
+		except ValueError:
+			print "Please input a number."
 
 	# CPU decisions and actions
 	cpu_weapon = weapons[random.choice('qwe')]
 	cpu_set_choices = list(heur.setHand(player_hp, player_mp, cpu_hp, cpu_mp, cpu_hand))
 	total_cost = 0
-	for element in cpu_set_choices:
-		if total_cost >= cpu_mp:
-			break
-		if element == "Fire":
+	for element in cpu_set_choices:	
+		if element == "Fire" and (cpu_mp - total_cost) > 1:
 			total_cost += 2
 			cpu_set.append("Fire")
-		elif element == "Water":
+		elif element == "Water" and (cpu_mp - total_cost) > 1:
 			total_cost += 2
 			cpu_set.append("Water")
-		elif element == "Wind":
+		elif element == "Wind" and (cpu_mp - total_cost) > 2:
 			total_cost += 3
 			cpu_set.append("Wind")
-		elif element == "Earth":
+		elif element == "Earth" and (cpu_mp - total_cost) > 2:
 			total_cost += 3
 			cpu_set.append("Earth")
-
-
+	
 
 
 	if weapon_win(player_weapon, cpu_weapon) == 1:
