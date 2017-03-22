@@ -160,17 +160,17 @@ def element_battle(player_set, cpu_set):
 			cpu_hand.remove("Earth")
 
 	if cpu_earth:
-		result += "CPU negated incoming damage. "
+		result += "CPU negated incoming damage. \n"
 		player_total_damage = 0
-		for "Wind" in player_set:
-			result += "CPU reflected 4 Wind damage. "
+		for i in range(player_set.count("Wind")):
+			result += "CPU reflected 4 Wind damage. \n"
 			player_hp -= 4
 
 	if "Earth" in player_set:
-		result += "Player negated incoming damage. "
+		result += "Player negated incoming damage. \n"
 		cpu_total_damage = 0
-		for "Wind" in cpu_set:
-			result += "Player reflected 4 Wind damage. "
+		for i in range(cpu_set.count("Wind")):
+			result += "Player reflected 4 Wind damage. \n"
 			cpu_hp -= 4
 		
 		
